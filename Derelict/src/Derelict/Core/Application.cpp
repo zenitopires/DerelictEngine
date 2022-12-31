@@ -82,8 +82,6 @@ namespace Derelict {
 		s_Instance = this;
 		m_Window = std::unique_ptr<Window>(Window::Create());
 
-
-
 	}
 
 	Application::~Application()
@@ -93,9 +91,14 @@ namespace Derelict {
 
 	void Application::Run()
 	{
-		unsigned int count = 0;
+
+
+
 		while (m_Running)
 		{
+			glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+
 			SDL_Event event;
 
 			while (SDL_PollEvent(&event))
@@ -118,6 +121,7 @@ namespace Derelict {
 					break;
 				}
 			}
+			m_Window->OnUpdate();
 		}
 	}
 

@@ -23,6 +23,8 @@ namespace Derelict {
 	private:
 		SDL_Window* m_Window;
 
+		SDL_GLContext m_Context;
+
 		struct WindowData
 		{
 			std::string Title;

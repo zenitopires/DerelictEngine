@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <glad/glad.h>
+
 namespace Derelict
 {
 	static bool s_SDLInitialized = false;
@@ -23,7 +25,7 @@ namespace Derelict
 
 	void WindowsWindow::OnUpdate()
 	{
-
+		SDL_GL_SwapWindow(m_Window);
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)
@@ -44,10 +46,12 @@ namespace Derelict
 
 			s_SDLInitialized = true;
 		}
-		SDL_GL_LoadLibrary(NULL);
+
+		//SDL_GL_LoadLibrary(NULL);
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
@@ -63,8 +67,32 @@ namespace Derelict
 			std::cout << "Failed to create SDL window\n";
 			SDL_Quit();
 		}
+		else
+		{
+			std::cout << "Successful window creation.\n";
 
-		std::cout << "Successful window creation.\n";
+
+			m_Context = SDL_GL_CreateContext(m_Window);
+
+			if (m_Context == nullptr)
+			{
+				std::cout << "OpenGL context could not be created.\n" << SDL_GetError() << '\n';
+				SDL_Quit();
+			}
+
+			if (SDL_GL_MakeCurrent(m_Window, m_Context) < 0)
+			{
+				std::cout << "Failed to make context current!\n" << SDL_GetError() << '\n';
+				SDL_Quit();
+				exit(1);
+			}
+
+			if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+			{
+				std::cout << "Failure\n";
+			}
+		}
+
 	}
 
 	void WindowsWindow::Shutdown()

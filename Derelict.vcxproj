@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Derelict\src\Derelict\Core\Application.cpp" />
+    <ClCompile Include="Derelict\src\external\glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsWindow.cpp" />
