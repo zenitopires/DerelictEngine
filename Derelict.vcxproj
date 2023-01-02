@@ -151,9 +151,11 @@
     <ClCompile Include="Derelict\src\Derelict\Core\Application.cpp" />
     <ClCompile Include="Derelict\src\external\glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Renderer\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Derelict\src\Derelict\Core\Input.h" />
@@ -165,6 +167,8 @@
     <ClInclude Include="Derelict\src\Derelict\Events\MouseEvent.h" />
     <ClInclude Include="Derelict\src\Derelict\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.h" />
+    <ClInclude Include="Derelict\src\Derelict\Renderer\Shader.h" />
+    <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,72 +1,4 @@
-#include <SDL3/SDL.h>
-#include <iostream>
 #include <glad/glad.h>
-
-#include "../Events/ApplicationEvent.h"
-
-//int main()
-//{
-//	//int windowFlags, rendererFlags;
-//
-//	//windowFlags = SDL_WINDOW_OPENGL;
-//	//rendererFlags = SDL_RENDERER_ACCELERATED;
-//
-//	//if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-//	//	std::cout << "Failed to start SDL\n" << SDL_GetError() << '\n';
-//	//	exit(1);
-//	//}
-//
-//	//SDL_GL_LoadLibrary(NULL);
-//	//SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-//	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-//	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-//	//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-//	//SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-//
-//
-//	//SDL_Window* window = SDL_CreateWindow("Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-//	//	1280, 720, windowFlags);
-//
-//	//auto context = SDL_GL_CreateContext(window);
-//
-//	//gladLoadGLLoader(SDL_GL_GetProcAddress);
-//
-//	////SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr, rendererFlags);
-//
-//	////if (renderer == nullptr) {
-//	////	std::cout << "Could not create renderer! " << SDL_GetError() << '\n';
-//	////}
-//
-//	//SDL_Event event;
-//
-//	//printf("OpenGL loaded\n");
-//	//gladLoadGLLoader(SDL_GL_GetProcAddress);
-//	//printf("Vendor:   %s\n", glGetString(GL_VENDOR));
-//	//printf("Renderer: %s\n", glGetString(GL_RENDERER));
-//	//printf("Version:  %s\n", glGetString(GL_VERSION));
-//
-//	//while (true)
-//	//{
-//	//	while (SDL_PollEvent(&event))
-//	//	{
-//	//		switch (event.type)
-//	//		{
-//	//		case SDL_QUIT:
-//	//			std::cout << "QUIT\n";
-//	//			break;
-//	//		case SDL_KEYDOWN:
-//	//			std::cout << "Keydown\n";
-//	//			break;
-//	//		case SDL_KEYUP:
-//	//			std::cout << "Keyup\n";
-//	//			break;
-//	//		}
-//	//	}
-//	//}
-//
-//	return 0;
-//}
-
 #include "Application.h"
 
 namespace Derelict {
@@ -86,6 +18,7 @@ namespace Derelict {
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Input = std::unique_ptr<Input>(Input::Create());
 		m_Input->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+
 	}
 
 	Application::~Application()
@@ -95,28 +28,95 @@ namespace Derelict {
 
 	void Application::Run()
 	{
+		unsigned int vao;
+		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+
+		unsigned int vbo;
+		glGenBuffers(1, &vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+		float vertices[3 * 3] = {
+			-0.5f, -0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			0.0f, 0.5f,  0.0f,
+		};
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+
+		std::string vertexSource = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 a_Position;
+			out vec3 v_Color;
+
+			void main()
+			{
+				gl_Position = vec4(a_Position, 1.0);
+				v_Color = a_Position;
+			}
+		)";
+
+		std::string fragmentSource = R"(
+			#version 330 core
+
+			out vec4 color;
+			in vec3 v_Color;
+
+			void main()
+			{
+				color = vec4(v_Color.r + 0.5, v_Color.g + 0.5, v_Color.b + 0.5, 1.0f);
+			}
+		)";
+
+		m_Shader.reset(Shader::Create(vertexSource, fragmentSource));
+
 		while (m_Running)
 		{
-			glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+
+			glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			m_Input->OnUpdate();
+			m_Shader->Bind();
+			glBindVertexArray(vao);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
 
+			m_Input->OnUpdate();
 			m_Window->OnUpdate();
 		}
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
+		std::cout << "Closing window.";
 		m_Running = false;
+		return true;
+	}
+
+	bool Application::OnKeyPressed(KeyPressedEvent& e)
+	{
+		std::cout << "Key Pressed: " << (char)e.GetKeyCode() << '\n';
+		return true;
+	}
+
+	bool Application::OnKeyReleased(KeyReleasedEvent& e)
+	{
+		std::cout << "Key Released: " << (char)e.GetKeyCode() << '\n';
 		return true;
 	}
 
 	void Application::OnEvent(Event& event)
 	{
+		//std::cout << event.ToString() << '\n';
+
 		EventDispatcher dispatcher(event);
 
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(Application::OnKeyPressed));
+		dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(Application::OnKeyReleased));
 	}
 
 	//Derelict::Application* Application::s_Instance;

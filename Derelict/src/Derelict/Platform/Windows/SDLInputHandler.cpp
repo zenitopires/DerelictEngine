@@ -1,12 +1,14 @@
 #include "SDLInputHandler.h"
 #include "../../Core/Application.h"
 #include "../../Events/ApplicationEvent.h"
+#include "../../Events/KeyEvent.h"
+
 
 #include <iostream>
 
 namespace Derelict {
 	Input* Input::Create() { return new SDLInputHandler(); }
-	
+
 	SDLInputHandler::SDLInputHandler()
 	{
 	}
@@ -17,9 +19,21 @@ namespace Derelict {
 		{
 			switch (m_Data.Event.type)
 			{
-				case SDL_QUIT:
-					WindowCloseEvent event;
-					m_Data.callback(event);
+			case SDL_QUIT:
+			{
+				WindowCloseEvent event;
+				m_Data.callback(event);
+				break;
+			}
+			case SDL_KEYDOWN:
+			{
+				KeyPressedEvent event(m_Data.Event.key.keysym.sym, 0);
+				m_Data.callback(event);
+				break;
+			}
+			case SDL_KEYUP:
+				KeyReleasedEvent event(m_Data.Event.key.keysym.sym);
+				m_Data.callback(event);
 			}
 		}
 	}
