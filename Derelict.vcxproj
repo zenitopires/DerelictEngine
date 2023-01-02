@@ -153,12 +153,18 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Derelict\src\Derelict\Core\Input.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Window.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Application.h" />
+    <ClInclude Include="Derelict\src\Derelict\Events\ApplicationEvent.h" />
+    <ClInclude Include="Derelict\src\Derelict\Events\Event.h" />
+    <ClInclude Include="Derelict\src\Derelict\Events\KeyEvent.h" />
+    <ClInclude Include="Derelict\src\Derelict\Events\MouseEvent.h" />
     <ClInclude Include="Derelict\src\Derelict\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <glad/glad.h>
 
+#include "../Events/ApplicationEvent.h"
+
 //int main()
 //{
 //	//int windowFlags, rendererFlags;
@@ -68,6 +70,7 @@
 #include "Application.h"
 
 namespace Derelict {
+#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
 
@@ -81,7 +84,8 @@ namespace Derelict {
 
 		s_Instance = this;
 		m_Window = std::unique_ptr<Window>(Window::Create());
-
+		m_Input = std::unique_ptr<Input>(Input::Create());
+		m_Input->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 	}
 
 	Application::~Application()
@@ -91,38 +95,28 @@ namespace Derelict {
 
 	void Application::Run()
 	{
-
-
-
 		while (m_Running)
 		{
 			glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			SDL_Event event;
+			m_Input->OnUpdate();
 
-			while (SDL_PollEvent(&event))
-			{
-				switch (event.type)
-				{
-				case SDL_QUIT:
-					//app.running = false;
-					exit(0);
-
-				case SDL_KEYDOWN:
-					//ProcessDownKey(&event.key);
-					break;
-
-				case SDL_KEYUP:
-					//ProcessUpKey(&event.key);
-					break;
-
-				default:
-					break;
-				}
-			}
 			m_Window->OnUpdate();
 		}
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return true;
+	}
+
+	void Application::OnEvent(Event& event)
+	{
+		EventDispatcher dispatcher(event);
+
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 	}
 
 	//Derelict::Application* Application::s_Instance;
