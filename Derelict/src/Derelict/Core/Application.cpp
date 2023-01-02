@@ -32,17 +32,13 @@ namespace Derelict {
 		glGenVertexArrays(1, &vao);
 		glBindVertexArray(vao);
 
-		unsigned int vbo;
-		glGenBuffers(1, &vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
 		float vertices[3 * 3] = {
 			-0.5f, -0.5f, 0.0f,
 			0.5f, -0.5f, 0.0f,
 			0.0f, 0.5f,  0.0f,
 		};
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);

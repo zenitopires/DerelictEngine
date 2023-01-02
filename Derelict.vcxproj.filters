@@ -39,6 +39,12 @@
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Derelict\src\Derelict\Renderer\Buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Derelict\src\Derelict\Core\Input.h">
@@ -72,6 +78,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Derelict\src\Derelict\Renderer\Buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
