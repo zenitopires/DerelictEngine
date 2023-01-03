@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "../Renderer/Buffer.h"
+#include "../Renderer/VertexArray.h"
 #include "../Renderer/Shader.h"
 #include "../Events/ApplicationEvent.h"
 #include "../Events/KeyEvent.h"
@@ -31,6 +32,7 @@ namespace Derelict {
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<Input> m_Input;
 		std::unique_ptr<VertexBuffer> m_VertexBuffer;
+		std::unique_ptr<VertexArray> m_VertexArray;
 		static Application* s_Instance;
 	};
 

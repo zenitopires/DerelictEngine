@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include "Application.h"
+#include "../Platform/OpenGL/OpenGLBuffer.h"
 
 namespace Derelict {
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
@@ -28,9 +29,10 @@ namespace Derelict {
 
 	void Application::Run()
 	{
-		unsigned int vao;
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
+		m_VertexArray = std::unique_ptr<VertexArray>(VertexArray::Create());
+		//unsigned int vao;
+		//glGenVertexArrays(1, &vao);
+		//glBindVertexArray(vao);
 
 		float vertices[3 * 3] = {
 			-0.5f, -0.5f, 0.0f,
@@ -38,7 +40,7 @@ namespace Derelict {
 			0.0f, 0.5f,  0.0f,
 		};
 
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		m_VertexBuffer = std::unique_ptr<VertexBuffer>(VertexBuffer::Create(vertices, sizeof(vertices)));
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
@@ -68,7 +70,9 @@ namespace Derelict {
 			}
 		)";
 
-		m_Shader.reset(Shader::Create(vertexSource, fragmentSource));
+		//m_Shader.reset(Shader::Create(vertexSource, fragmentSource));
+
+		m_Shader = std::unique_ptr<Shader>(Shader::Create(vertexSource, fragmentSource));
 
 		while (m_Running)
 		{
@@ -77,7 +81,7 @@ namespace Derelict {
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			m_Shader->Bind();
-			glBindVertexArray(vao);
+			m_VertexArray->Bind();
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
 			m_Input->OnUpdate();
