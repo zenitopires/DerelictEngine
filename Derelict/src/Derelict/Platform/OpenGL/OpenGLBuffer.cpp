@@ -1,9 +1,8 @@
 #include "OpenGLBuffer.h"
-#include <glad/glad.h>
+//#include <glad/glad.h>
 #include <iostream>
 
 namespace Derelict {
-
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
 		: m_RendererID(0)
 	{

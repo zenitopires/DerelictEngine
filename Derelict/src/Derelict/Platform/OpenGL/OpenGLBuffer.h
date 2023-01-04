@@ -1,8 +1,11 @@
 #pragma once
 
 #include "../../Renderer/Buffer.h"
+#include <glad/glad.h>
 
 namespace Derelict {
+	GLenum ShaderDataTypeToGLenum(ShaderDataType type);
+
 	class OpenGLVertexBuffer : public VertexBuffer
 	{
 	public:
@@ -10,8 +13,11 @@ namespace Derelict {
 		~OpenGLVertexBuffer();
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+		virtual void SetLayout(const AttributeLayout& layout) override { m_Layout = layout; }
+		virtual const AttributeLayout& GetLayout() const override { return m_Layout; };
 
 	private:
 		uint32_t m_RendererID;
+		AttributeLayout m_Layout;
 	};
 }

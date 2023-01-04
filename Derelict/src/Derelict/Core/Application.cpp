@@ -29,21 +29,22 @@ namespace Derelict {
 
 	void Application::Run()
 	{
-		m_VertexArray = std::unique_ptr<VertexArray>(VertexArray::Create());
-		//unsigned int vao;
-		//glGenVertexArrays(1, &vao);
-		//glBindVertexArray(vao);
-
 		float vertices[3 * 3] = {
 			-0.5f, -0.5f, 0.0f,
 			0.5f, -0.5f, 0.0f,
 			0.0f, 0.5f,  0.0f,
 		};
 
-		m_VertexBuffer = std::unique_ptr<VertexBuffer>(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
+		m_VertexArray = std::unique_ptr<VertexArray>(VertexArray::Create());
+		m_VertexBuffer = std::shared_ptr<VertexBuffer>(VertexBuffer::Create(vertices, sizeof(vertices)));
+
+		AttributeLayout layout = {
+			{ ShaderDataType::Float3 }
+		};
+
+		m_VertexBuffer->SetLayout(layout);
+		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
 		std::string vertexSource = R"(
 			#version 330 core
@@ -69,8 +70,6 @@ namespace Derelict {
 				color = vec4(v_Color.r + 0.5, v_Color.g + 0.5, v_Color.b + 0.5, 1.0f);
 			}
 		)";
-
-		//m_Shader.reset(Shader::Create(vertexSource, fragmentSource));
 
 		m_Shader = std::unique_ptr<Shader>(Shader::Create(vertexSource, fragmentSource));
 
