@@ -155,6 +155,7 @@
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="Derelict\src\Derelict\Renderer\VertexArray.h" />
     <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="Derelict\src\Derelict\Renderer\OrthographicCamera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

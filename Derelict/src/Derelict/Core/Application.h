@@ -5,6 +5,7 @@
 #include "../Renderer/Buffer.h"
 #include "../Renderer/VertexArray.h"
 #include "../Renderer/Shader.h"
+#include "../Renderer/OrthographicCamera.h"
 #include "../Events/ApplicationEvent.h"
 #include "../Events/KeyEvent.h"
 
@@ -33,6 +34,8 @@ namespace Derelict {
 		std::unique_ptr<Input> m_Input;
 		std::shared_ptr<VertexBuffer> m_VertexBuffer;
 		std::unique_ptr<VertexArray> m_VertexArray;
+
+		OrthographicCamera m_Camera;
 		static Application* s_Instance;
 	};
 

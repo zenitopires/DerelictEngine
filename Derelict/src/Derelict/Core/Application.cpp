@@ -7,7 +7,7 @@ namespace Derelict {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application() : m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		if (s_Instance) 
 		{
@@ -52,9 +52,11 @@ namespace Derelict {
 			layout(location = 0) in vec3 a_Position;
 			out vec3 v_Color;
 
+			uniform mat4 u_ViewProjection;
+
 			void main()
 			{
-				gl_Position = vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
 				v_Color = a_Position;
 			}
 		)";
@@ -80,6 +82,7 @@ namespace Derelict {
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			m_Shader->Bind();
+			m_Shader->UploadMat4("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
 			m_VertexArray->Bind();
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 

@@ -4,6 +4,8 @@
 #include <iostream>
 #include <glad/glad.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Derelict {
 
 	OpenGLShader::OpenGLShader(std::string_view vertexSource, std::string_view fragmentSource)
@@ -119,6 +121,12 @@ namespace Derelict {
 	void OpenGLShader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+
+	void OpenGLShader::UploadMat4(std::string_view name, const glm::mat4& matrix)
+	{
+		GLint location = glGetUniformLocation(m_RendererID, name.data());
+		glUniformMatrix4fv(location, 1, GL_TRUE, glm::value_ptr(matrix));
 	}
 
 }

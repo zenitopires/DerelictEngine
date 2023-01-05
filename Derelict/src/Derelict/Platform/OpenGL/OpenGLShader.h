@@ -2,6 +2,10 @@
 
 #include "../../Renderer/Shader.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
+#include <string>
+
 namespace Derelict {
 	class OpenGLShader : public Shader
 	{
@@ -10,6 +14,8 @@ namespace Derelict {
 		virtual ~OpenGLShader() override;
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		virtual void UploadMat4(std::string_view name, const glm::mat4& matrix) override;
 
 	private:
 		uint32_t m_RendererID;
