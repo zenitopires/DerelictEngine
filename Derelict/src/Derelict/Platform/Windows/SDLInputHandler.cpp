@@ -7,7 +7,16 @@
 #include <iostream>
 
 namespace Derelict {
+	Input* Input::s_Instance = new SDLInputHandler();
+
 	Input* Input::Create() { return new SDLInputHandler(); }
+
+
+	static void CheckKeyStates()
+	{
+		 const Uint8* keys = SDL_GetKeyboardState(NULL);
+		 SDL_PumpEvents();
+	}
 
 	SDLInputHandler::SDLInputHandler()
 	{
@@ -38,10 +47,14 @@ namespace Derelict {
 		}
 	}
 
-	bool SDLInputHandler::KeyPressedImpl(int keycode)
+	bool SDLInputHandler::KeyPressedImpl(int scancode)
 	{
+		const Uint8* keys = SDL_GetKeyboardState(NULL);
+		SDL_PumpEvents();
 
-		return true;
+		if (keys[scancode] == 1)
+			return true;
+		return false;
 	}
 
 	bool SDLInputHandler::MouseButtonPressedImpl(int button)

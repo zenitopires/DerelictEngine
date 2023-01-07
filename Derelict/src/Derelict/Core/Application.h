@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "Input.h"
+#include "LayerStack.h"
 #include "../Renderer/Buffer.h"
 #include "../Renderer/VertexArray.h"
 #include "../Renderer/Shader.h"
@@ -20,6 +21,10 @@ namespace Derelict {
 
 		void Run();
 		void OnEvent(Event& event);
+
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
+
 		inline static Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
 
@@ -29,14 +34,12 @@ namespace Derelict {
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnKeyReleased(KeyReleasedEvent& e);
 
-		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<Window> m_Window;
-		std::unique_ptr<Input> m_Input;
-		std::shared_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<VertexArray> m_VertexArray;
+		std::unique_ptr<Derelict::Window> m_Window;
+		std::unique_ptr<Derelict::Input> m_Input;
+		LayerStack m_LayerStack;
 
-		OrthographicCamera m_Camera;
 		static Application* s_Instance;
+
 	};
 
 	Application* CreateApplication();

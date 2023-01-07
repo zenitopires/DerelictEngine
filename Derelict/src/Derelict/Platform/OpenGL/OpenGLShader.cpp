@@ -126,7 +126,7 @@ namespace Derelict {
 	void OpenGLShader::UploadMat4(std::string_view name, const glm::mat4& matrix)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.data());
-		glUniformMatrix4fv(location, 1, GL_TRUE, glm::value_ptr(matrix));
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 }

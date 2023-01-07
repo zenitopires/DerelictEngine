@@ -151,6 +151,8 @@
     <ClCompile Include="Derelict\src\Derelict\Renderer\Buffer.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Core\Application.cpp" />
     <ClCompile Include="Derelict\src\external\glad.c" />
+    <ClCompile Include="Derelict\src\Derelict\Core\Layer.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Core\LayerStack.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLBuffer.cpp" />
@@ -179,6 +181,8 @@
     <ClInclude Include="Derelict\src\Derelict\Renderer\VertexArray.h" />
     <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="Derelict\src\Derelict\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="Derelict\src\Derelict\Core\Layer.h" />
+    <ClInclude Include="Derelict\src\Derelict\Core\LayerStack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,6 +9,8 @@ namespace Derelict {
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
 
+		inline static bool IsKeyPressed(int keycode) { return s_Instance->KeyPressedImpl(keycode); }
+
 		static Input* Create();
 		virtual void OnUpdate() = 0;
 		virtual bool KeyPressedImpl(int keycode) = 0;
@@ -16,5 +18,8 @@ namespace Derelict {
 		virtual bool GetMouseXImpl() = 0;
 		virtual bool GetMouseYImpl() = 0;
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
+
+	private:
+		static Input* s_Instance;
 	};
 }
