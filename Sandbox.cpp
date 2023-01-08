@@ -58,26 +58,28 @@ public:
 		m_Shader = std::unique_ptr<Derelict::Shader>(Derelict::Shader::Create(vertexSource, fragmentSource));
 	}
 
-	void OnUpdate() override
+	void OnUpdate(float deltaTime) override
 	{
+		//std::cout << "Delta time: " << timestep.GetSeconds() << "s " << timestep.GetMilliseconds() << "ms" << '\n';
+
 		glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_D))
+		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_A))
 		{
-			m_CameraPosition.x -= 0.01f;
+			m_CameraPosition.x += 1.0f * deltaTime;
 		}
-		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_A))
+		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_D))
 		{
-			m_CameraPosition.x += 0.01f;
+			m_CameraPosition.x -= 1.0f * deltaTime;
+		}
+		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_S))
+		{
+			m_CameraPosition.y += 1.0f * deltaTime;
 		}
 		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_W))
 		{
-			m_CameraPosition.y -= 0.01f;
-		}
-		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_S))
-		{
-			m_CameraPosition.y += 0.01f;
+			m_CameraPosition.y -= 1.0f * deltaTime;
 		}
 
 

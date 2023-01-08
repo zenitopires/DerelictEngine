@@ -33,6 +33,8 @@ namespace Derelict
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
+		m_Data.vsync = props.Vsync;
+
 
 		if (!s_SDLInitialized)
 		{
@@ -73,6 +75,11 @@ namespace Derelict
 
 
 			m_Context = SDL_GL_CreateContext(m_Window);
+
+			if (props.Vsync)
+				SDL_GL_SetSwapInterval(1);
+			else
+				SDL_GL_SetSwapInterval(0);
 
 			if (m_Context == nullptr)
 			{

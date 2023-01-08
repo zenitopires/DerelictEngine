@@ -163,6 +163,7 @@
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Renderer\Shader.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Renderer\VertexArray.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Derelict\src\Derelict\Renderer\Buffer.h" />
@@ -183,6 +184,8 @@
     <ClInclude Include="Derelict\src\Derelict\Renderer\OrthographicCamera.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Layer.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\LayerStack.h" />
+    <ClInclude Include="Derelict\src\Derelict\Core\Timer.h" />
+    <ClInclude Include="Derelict\src\Derelict\Platform\Windows\WindowsTimer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

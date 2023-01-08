@@ -11,10 +11,11 @@ namespace Derelict {
 		std::string Title;
 		unsigned int Width;
 		unsigned int Height;
+		bool Vsync;
 
 		WindowProps(std::string_view title = "Derelict Engine",
-			unsigned int width = 1280, unsigned int height = 720)
-			: Title(title), Width(width), Height(height)
+			unsigned int width = 1280, unsigned int height = 720, bool vsync = false)
+			: Title(title), Width(width), Height(height), Vsync(vsync)
 		{}
 	};
 
@@ -28,6 +29,7 @@ namespace Derelict {
 		virtual void OnUpdate() = 0;
 		virtual unsigned int GetWidth() const = 0;
 		virtual unsigned int GetHeight() const = 0;
+		virtual void SetVsync(bool vsync) = 0;
 
 		virtual void* GetNativeWindow() const = 0;
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;

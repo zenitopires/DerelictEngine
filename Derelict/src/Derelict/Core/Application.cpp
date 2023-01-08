@@ -18,9 +18,13 @@ namespace Derelict {
 		}
 
 		s_Instance = this;
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		WindowProps props("Derelict Engine", 1280, 720, true);
+		m_Window = std::unique_ptr<Window>(Window::Create(props));
 		m_Input = std::unique_ptr<Input>(Input::Create());
 		m_Input->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		m_Timer = std::unique_ptr<Timer>(Timer::Create());
+
+		m_Timer->Start();
 	}
 
 	Application::~Application()
@@ -38,13 +42,11 @@ namespace Derelict {
 
 	bool Application::OnKeyPressed(KeyPressedEvent& e)
 	{
-		std::cout << "Key Pressed: " << e.GetKeyCode() << '\n';
 		return true;
 	}
 
 	bool Application::OnKeyReleased(KeyReleasedEvent& e)
 	{
-		//std::cout << "Key Released: " << (char)e.GetKeyCode() << '\n';
 		return true;
 	}
 
@@ -75,14 +77,20 @@ namespace Derelict {
 	{
 		while (m_Running)
 		{
+			m_Timer->Tick();
+
+			std::cout << std::fixed;
+			std::cout << m_Timer->DeltaTime() * 1000 << std::endl;
+
 			for (Layer* layer : m_LayerStack)
 			{
-				layer->OnUpdate();
+				layer->OnUpdate(m_Timer->DeltaTime());
 			}
 
 			m_Input->OnUpdate();
 			m_Window->OnUpdate();
 		}
+		m_Timer->Stop();
 	}
 	//Derelict::Application* Application::s_Instance;
 

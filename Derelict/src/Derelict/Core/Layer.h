@@ -2,6 +2,8 @@
 
 #include "../Events/Event.h"
 
+#include "Timer.h"
+
 #include <string>
 
 namespace Derelict {
@@ -13,7 +15,7 @@ namespace Derelict {
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(float deltaTime) {}
 		virtual void OnEvent(Event& event) {}
 
 		inline std::string_view GetName() { return m_DebugName; }
