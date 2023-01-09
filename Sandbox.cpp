@@ -5,11 +5,14 @@
 
 #include <memory>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class TestLayer : public Derelict::Layer
 {
 public:
 	TestLayer() : Layer("Test Bed") ,
-		m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+		m_Camera(-1.6f, 1.6f, -0.9f, 0.9f),
+		m_TrianglePosition(0.0f)
 	{
 		float vertices[3 * 3] = {
 			-0.5f, -0.5f, 0.0f,
@@ -25,6 +28,23 @@ public:
 		m_VertexBuffer = std::shared_ptr<Derelict::VertexBuffer>(Derelict::VertexBuffer::Create(vertices, sizeof(vertices)));
 		m_IndexBuffer = std::shared_ptr<Derelict::IndexBuffer>(Derelict::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
+
+		float squareVertices[3 * 4] = {
+			-0.5f, -0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			0.0f, 0.5f,  0.0f,
+			0.5f, 0.0f,  0.0f
+		};
+
+		uint32_t squareIndices[6] = {
+			0,1,3,
+			1,2,3
+		};
+
+		m_SquareVertexArray = std::shared_ptr<Derelict::VertexArray>(Derelict::VertexArray::Create());
+		m_SquareBuffer = std::shared_ptr<Derelict::VertexBuffer>(Derelict::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		m_SquareIndexBuffer = std::shared_ptr<Derelict::IndexBuffer>(Derelict::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+
 		Derelict::AttributeLayout layout = {
 			{ Derelict::ShaderDataType::Float3 }
 		};
@@ -33,6 +53,10 @@ public:
 		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
+		m_SquareBuffer->SetLayout(layout);
+		m_SquareVertexArray->AddVertexBuffer(m_SquareBuffer);
+		m_SquareVertexArray->SetIndexBuffer(m_SquareIndexBuffer);
+
 		std::string vertexSource = R"(
 			#version 330 core
 
@@ -40,10 +64,11 @@ public:
 			out vec3 v_Color;
 
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
 
 			void main()
 			{
-				gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 				v_Color = vec3(gl_Position);
 			}
 		)";
@@ -60,21 +85,13 @@ public:
 			}
 		)";
 
-		m_Shader = std::unique_ptr<Derelict::Shader>(Derelict::Shader::Create(vertexSource, fragmentSource));
+		m_Shader = std::shared_ptr<Derelict::Shader>(Derelict::Shader::Create(vertexSource, fragmentSource));
 	}
 
 	void OnUpdate(float deltaTime) override
 	{
-		//std::cout << "Delta time: " << timestep.GetSeconds() << "s " << timestep.GetMilliseconds() << "ms" << '\n';
-
-		//glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
-		//glClear(GL_COLOR_BUFFER_BIT);
-
 		Derelict::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
 		Derelict::RenderCommand::Clear();
-
-		// RenderCommand::SetClearColor()
-		// RenderCommand::Clear()
 
 		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_A))
 		{
@@ -93,15 +110,19 @@ public:
 			m_CameraPosition.y -= 1.0f * deltaTime;
 		}
 
-		Derelict::Renderer::BeginScene();
+		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_I))
+		{
+			m_TrianglePosition.y -= 1.0f * deltaTime;
+		}
+
+		Derelict::Renderer::BeginScene(m_Camera);
 		{
 			m_Camera.SetPosition(m_CameraPosition);
 			m_Camera.SetRotation(m_CameraRotation);
-
-			m_Shader->Bind();
-			m_Shader->UploadMat4("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
-			Derelict::Renderer::Submit(m_VertexArray);
-			//glDrawArrays(GL_TRIANGLES, 0, 3);
+			glm::mat4 test = glm::translate(glm::mat4(1.0f), m_TrianglePosition);
+			glm::mat4 test2 = glm::translate(glm::mat4(1.0f), glm::vec3(-0.7f, 0.0f, 0.0f));
+			Derelict::Renderer::Submit(m_Shader, m_VertexArray, test);
+			//Derelict::Renderer::Submit(m_Shader, m_SquareVertexArray, test2);
 		}
 		Derelict::Renderer::EndScene();
 
@@ -113,14 +134,21 @@ public:
 	}
 
 private:
-	std::unique_ptr<Derelict::Shader> m_Shader;
-	std::shared_ptr<Derelict::IndexBuffer> m_IndexBuffer;
-	std::shared_ptr<Derelict::VertexBuffer> m_VertexBuffer;
+	std::shared_ptr<Derelict::Shader> m_Shader;
+
 	std::shared_ptr<Derelict::VertexArray> m_VertexArray;
+	std::shared_ptr<Derelict::VertexBuffer> m_VertexBuffer;
+	std::shared_ptr<Derelict::IndexBuffer> m_IndexBuffer;
+
+	std::shared_ptr<Derelict::VertexArray> m_SquareVertexArray;
+	std::shared_ptr<Derelict::VertexBuffer> m_SquareBuffer;
+	std::shared_ptr<Derelict::IndexBuffer> m_SquareIndexBuffer;
 
 	Derelict::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
 	float m_CameraRotation;
+
+	glm::vec3 m_TrianglePosition;
 };
 
 class Sandbox : public Derelict::Application
