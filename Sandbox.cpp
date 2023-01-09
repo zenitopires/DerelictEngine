@@ -31,14 +31,14 @@ public:
 
 		float squareVertices[3 * 4] = {
 			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f,  0.0f,
-			0.5f, 0.0f,  0.0f
+			 0.5f, -0.5f, 0.0f,
+			 0.5f, 0.5f,  0.0f,
+			-0.5f, 0.5f,  0.0f,
 		};
 
 		uint32_t squareIndices[6] = {
-			0,1,3,
-			1,2,3
+			0,1,2,
+			2,3,0
 		};
 
 		m_SquareVertexArray = std::shared_ptr<Derelict::VertexArray>(Derelict::VertexArray::Create());
@@ -53,7 +53,10 @@ public:
 		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
-		m_SquareBuffer->SetLayout(layout);
+		Derelict::AttributeLayout squareLayout = {
+			{ Derelict::ShaderDataType::Float3 }
+		};
+		m_SquareBuffer->SetLayout(squareLayout);
 		m_SquareVertexArray->AddVertexBuffer(m_SquareBuffer);
 		m_SquareVertexArray->SetIndexBuffer(m_SquareIndexBuffer);
 
@@ -85,7 +88,37 @@ public:
 			}
 		)";
 
+		std::string blueShaderVertexSource = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 a_Position;
+			out vec3 v_Color;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			void main()
+			{
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+				v_Color = vec3(gl_Position);
+			}
+		)";
+
+		std::string blueShaderFragmentSource = R"(
+			#version 330 core
+
+			out vec4 color;
+			in vec3 v_Color;
+
+			void main()
+			{
+				color = vec4(0.0, 1.0, 0.0, 1.0f);
+			}
+		)";
+
 		m_Shader = std::shared_ptr<Derelict::Shader>(Derelict::Shader::Create(vertexSource, fragmentSource));
+		m_BlueShader = std::shared_ptr<Derelict::Shader>(Derelict::Shader::Create(blueShaderVertexSource, blueShaderFragmentSource));
+
 	}
 
 	void OnUpdate(float deltaTime) override
@@ -95,22 +128,35 @@ public:
 
 		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_A))
 		{
-			m_CameraPosition.x += 1.0f * deltaTime;
+			m_CameraPosition.x -= 1.0f * deltaTime;
 		}
 		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_D))
 		{
-			m_CameraPosition.x -= 1.0f * deltaTime;
+			m_CameraPosition.x += 1.0f * deltaTime;
 		}
 		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_S))
 		{
-			m_CameraPosition.y += 1.0f * deltaTime;
+			m_CameraPosition.y -= 1.0f * deltaTime;
 		}
 		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_W))
 		{
-			m_CameraPosition.y -= 1.0f * deltaTime;
+			m_CameraPosition.y += 1.0f * deltaTime;
 		}
 
+
+		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_J))
+		{
+			m_TrianglePosition.x -= 1.0f * deltaTime;
+		}
+		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_L))
+		{
+			m_TrianglePosition.x += 1.0f * deltaTime;
+		}
 		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_I))
+		{
+			m_TrianglePosition.y += 1.0f * deltaTime;
+		}
+		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_K))
 		{
 			m_TrianglePosition.y -= 1.0f * deltaTime;
 		}
@@ -120,9 +166,13 @@ public:
 			m_Camera.SetPosition(m_CameraPosition);
 			m_Camera.SetRotation(m_CameraRotation);
 			glm::mat4 test = glm::translate(glm::mat4(1.0f), m_TrianglePosition);
-			glm::mat4 test2 = glm::translate(glm::mat4(1.0f), glm::vec3(-0.7f, 0.0f, 0.0f));
+			for (int i = 0; i < 5; i++)
+			{
+				glm::mat4 test = glm::translate(glm::mat4(1.0f), glm::vec3((float)i, 0.0f, 0.0f));
+				Derelict::Renderer::Submit(m_BlueShader, m_SquareVertexArray, test);
+			}
+			
 			Derelict::Renderer::Submit(m_Shader, m_VertexArray, test);
-			//Derelict::Renderer::Submit(m_Shader, m_SquareVertexArray, test2);
 		}
 		Derelict::Renderer::EndScene();
 
@@ -135,6 +185,7 @@ public:
 
 private:
 	std::shared_ptr<Derelict::Shader> m_Shader;
+	std::shared_ptr<Derelict::Shader> m_BlueShader;
 
 	std::shared_ptr<Derelict::VertexArray> m_VertexArray;
 	std::shared_ptr<Derelict::VertexBuffer> m_VertexBuffer;
