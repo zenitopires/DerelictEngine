@@ -72,4 +72,22 @@ namespace Derelict {
 		}
 	}
 
+	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+	{
+		glBindVertexArray(m_RendererID);
+		indexBuffer->Bind();
+
+		m_IndexBuffer = indexBuffer;
+	}
+
+	const std::vector<std::shared_ptr<Derelict::VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
+	{
+		return m_VertexBuffers;
+	}
+
+	const std::shared_ptr<Derelict::IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
+	{
+		return m_IndexBuffer;
+	}
+
 }

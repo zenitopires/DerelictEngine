@@ -17,9 +17,13 @@ public:
 			0.0f, 0.5f,  0.0f,
 		};
 
+		uint32_t indices[3] = {
+			0,1,2
+		};
 
-		m_VertexArray = std::unique_ptr<Derelict::VertexArray>(Derelict::VertexArray::Create());
+		m_VertexArray = std::shared_ptr<Derelict::VertexArray>(Derelict::VertexArray::Create());
 		m_VertexBuffer = std::shared_ptr<Derelict::VertexBuffer>(Derelict::VertexBuffer::Create(vertices, sizeof(vertices)));
+		m_IndexBuffer = std::shared_ptr<Derelict::IndexBuffer>(Derelict::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
 		Derelict::AttributeLayout layout = {
 			{ Derelict::ShaderDataType::Float3 }
@@ -27,6 +31,7 @@ public:
 
 		m_VertexBuffer->SetLayout(layout);
 		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
+		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
 		std::string vertexSource = R"(
 			#version 330 core
@@ -62,8 +67,14 @@ public:
 	{
 		//std::cout << "Delta time: " << timestep.GetSeconds() << "s " << timestep.GetMilliseconds() << "ms" << '\n';
 
-		glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		//glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
+		//glClear(GL_COLOR_BUFFER_BIT);
+
+		Derelict::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
+		Derelict::RenderCommand::Clear();
+
+		// RenderCommand::SetClearColor()
+		// RenderCommand::Clear()
 
 		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_A))
 		{
@@ -82,18 +93,18 @@ public:
 			m_CameraPosition.y -= 1.0f * deltaTime;
 		}
 
+		Derelict::Renderer::BeginScene();
+		{
+			m_Camera.SetPosition(m_CameraPosition);
+			m_Camera.SetRotation(m_CameraRotation);
 
+			m_Shader->Bind();
+			m_Shader->UploadMat4("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
+			Derelict::Renderer::Submit(m_VertexArray);
+			//glDrawArrays(GL_TRIANGLES, 0, 3);
+		}
+		Derelict::Renderer::EndScene();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		m_Shader->Bind();
-		m_Shader->UploadMat4("u_ViewProjection", m_Camera.GetViewProjectionMatrix());
-		m_VertexArray->Bind();
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		//m_Input->OnUpdate();
-		//m_Window->OnUpdate();
 	}
 
 	void OnEvent(Derelict::Event& event) override
@@ -103,8 +114,9 @@ public:
 
 private:
 	std::unique_ptr<Derelict::Shader> m_Shader;
+	std::shared_ptr<Derelict::IndexBuffer> m_IndexBuffer;
 	std::shared_ptr<Derelict::VertexBuffer> m_VertexBuffer;
-	std::unique_ptr<Derelict::VertexArray> m_VertexArray;
+	std::shared_ptr<Derelict::VertexArray> m_VertexArray;
 
 	Derelict::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;

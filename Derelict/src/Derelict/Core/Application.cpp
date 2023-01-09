@@ -1,6 +1,5 @@
 #include <glad/glad.h>
 #include "Application.h"
-#include "../Platform/OpenGL/OpenGLBuffer.h"
 
 #include <SDL3/SDL.h>
 

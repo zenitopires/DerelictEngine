@@ -6,4 +6,9 @@ namespace Derelict {
 	{
 		return new OpenGLVertexBuffer(vertices, size);
 	}
+
+	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t count)
+	{
+		return new OpenGLIndexBuffer(indices, count);
+	}
 }

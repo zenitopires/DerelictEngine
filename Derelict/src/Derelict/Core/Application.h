@@ -7,6 +7,7 @@
 #include "../Renderer/Buffer.h"
 #include "../Renderer/VertexArray.h"
 #include "../Renderer/Shader.h"
+#include "../Renderer/Renderer.h"
 #include "../Renderer/OrthographicCamera.h"
 #include "../Events/ApplicationEvent.h"
 #include "../Events/KeyEvent.h"

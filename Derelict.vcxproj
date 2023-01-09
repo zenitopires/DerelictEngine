@@ -158,6 +158,10 @@
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Renderer\Renderer.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.cpp" />
@@ -186,6 +190,10 @@
     <ClInclude Include="Derelict\src\Derelict\Core\LayerStack.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Timer.h" />
     <ClInclude Include="Derelict\src\Derelict\Platform\Windows\WindowsTimer.h" />
+    <ClInclude Include="Derelict\src\Derelict\Renderer\RendererAPI.h" />
+    <ClInclude Include="Derelict\src\Derelict\Renderer\Renderer.h" />
+    <ClInclude Include="Derelict\src\Derelict\Renderer\RenderCommand.h" />
+    <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLRendererAPI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
