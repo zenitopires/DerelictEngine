@@ -170,6 +170,7 @@
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Derelict\src\Derelict\Core\Core.h" />
     <ClInclude Include="Derelict\src\Derelict\Renderer\Buffer.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Input.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Window.h" />

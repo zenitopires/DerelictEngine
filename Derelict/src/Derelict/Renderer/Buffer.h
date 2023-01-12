@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <string>
 
 namespace Derelict {
 	enum class ShaderDataType
@@ -37,7 +38,7 @@ namespace Derelict {
 		uint32_t Size;
 
 		VertexAttribute() = default;
-		VertexAttribute(ShaderDataType type, bool normalized = false)
+		VertexAttribute(ShaderDataType type, std::string_view name, bool normalized = false)
 			: Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized)
 		{
 		}

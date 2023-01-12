@@ -1,4 +1,6 @@
 #include "OpenGLVertexArray.h"
+#include "../../Core/Core.h"
+
 #include <glad/glad.h>
 
 #include <iostream>
@@ -46,7 +48,7 @@ namespace Derelict {
 	}
 
 	// Associate these attributes with the vertex buffer
-	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 	{
 		glBindVertexArray(m_RendererID);
 		vertexBuffer->Bind();
@@ -72,7 +74,7 @@ namespace Derelict {
 		}
 	}
 
-	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 	{
 		glBindVertexArray(m_RendererID);
 		indexBuffer->Bind();
@@ -80,12 +82,12 @@ namespace Derelict {
 		m_IndexBuffer = indexBuffer;
 	}
 
-	const std::vector<std::shared_ptr<Derelict::VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
+	const std::vector<Ref<Derelict::VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
 	{
 		return m_VertexBuffers;
 	}
 
-	const std::shared_ptr<Derelict::IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
+	const Ref<Derelict::IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
 	{
 		return m_IndexBuffer;
 	}

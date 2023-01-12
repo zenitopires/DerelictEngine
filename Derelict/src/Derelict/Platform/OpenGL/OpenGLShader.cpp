@@ -129,4 +129,10 @@ namespace Derelict {
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
+	void OpenGLShader::UploadFloat4(std::string_view name, const glm::vec4& values)
+	{
+		GLint location = glGetUniformLocation(m_RendererID, name.data());
+		glUniform4f(location, values.x, values.y, values.z, values.w);
+	}
+
 }

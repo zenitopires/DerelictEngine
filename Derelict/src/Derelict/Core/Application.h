@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core.h"
 #include "Window.h"
 #include "Input.h"
 #include "LayerStack.h"
@@ -37,9 +38,9 @@ namespace Derelict {
 
 	private:
 		bool m_Running = true;
-		std::unique_ptr<Derelict::Window> m_Window;
-		std::unique_ptr<Derelict::Input> m_Input;
-		std::unique_ptr<Derelict::Timer> m_Timer;
+		Scope<Derelict::Window> m_Window;
+		Scope<Derelict::Input> m_Input;
+		Scope<Derelict::Timer> m_Timer;
 		LayerStack m_LayerStack;
 		uint64_t m_LastFrameTime = 0;
 

@@ -149,5 +149,8 @@
     <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLRendererAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Derelict\src\Derelict\Core\Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

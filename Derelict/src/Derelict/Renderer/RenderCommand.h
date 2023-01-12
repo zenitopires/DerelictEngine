@@ -1,6 +1,8 @@
 #pragma once
 
 #include "RendererAPI.h"
+#include "../Core/Core.h"
+
 
 namespace Derelict {
 	class RenderCommand
@@ -10,7 +12,7 @@ namespace Derelict {
 		inline static void SetClearColor(const glm::vec4& color) { 
 			s_RendererAPI->SetClearColor(color);
 		}
-		inline static void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
+		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray)
 		{
 			s_RendererAPI->DrawIndexed(vertexArray);
 		}
