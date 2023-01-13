@@ -1,6 +1,8 @@
 #include "Derelict/src/Derelict/Core/Core.h"
 #include "Derelict/src/Derelict/Core/Application.h"
 #include "Derelict/src/Derelict/Platform/OpenGL/OpenGLShader.h"
+#include "Derelict/src/Derelict/Platform/OpenGL/OpenGLTexture2D.h"
+
 
 #include <glad/glad.h>
 #include <SDL3/SDL.h>
@@ -31,16 +33,24 @@ public:
 		m_IndexBuffer = Derelict::Ref<Derelict::IndexBuffer>(Derelict::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
 
-		float squareVertices[5 * 4] = {
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+		//float squareVertices[5 * 4] = {
+		//	-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, // Bottom left
+		//	 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Bottom right
+		//	 0.5f,  0.5f, 0.0f, 1.0f, 1.0f, // Top right
+		//	-0.5f,  0.5f, 0.0f, 0.0f, 1.0f, // Top left
+		//};
+
+		float squareVertices[] = {
+			// positions           // texture coords
+			 0.5f,  0.5f, 0.0f,    1.0f, 1.0f, // top right
+			 0.5f, -0.5f, 0.0f,    1.0f, 0.0f, // bottom right
+			-0.5f, -0.5f, 0.0f,    0.0f, 0.0f, // bottom left
+			-0.5f,  0.5f, 0.0f,    0.0f, 1.0f  // top left 
 		};
 
 		uint32_t squareIndices[6] = {
-			0,1,2,
-			2,3,0
+			0,1,3,
+			1,2,3
 		};
 
 		m_SquareVertexArray = Derelict::Ref<Derelict::VertexArray>(Derelict::VertexArray::Create());
@@ -157,15 +167,21 @@ public:
 
 			uniform vec4 u_Color;
 
+			uniform sampler2D u_Texture;
+
 			void main()
 			{
 				//color = vec4(0.0, 1.0, 0.0, 1.0f);
 				//color = u_Color;
-				color = vec4(v_TexCoord, 0.0, 1.0);
+				//color = vec4(v_TexCoord, 0.0, 1.0);
+				color = texture(u_Texture, v_TexCoord);
 			}
 		)";
 
 		m_TextureShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create(texureShaderVertexSource, texureShaderFragmentSource));
+
+		m_Texture = Derelict::Ref<Derelict::Texture2D>(Derelict::Texture2D::Create("assets/froglok.png"));
+		std::dynamic_pointer_cast<Derelict::OpenGLShader>(m_TextureShader)->UploadInt("u_Texture", 0);
 
 	}
 
@@ -234,6 +250,7 @@ public:
 				}
 			}
 
+			m_Texture->Bind();
 			Derelict::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 			//Derelict::Renderer::Submit(m_Shader, m_VertexArray, test);
@@ -258,6 +275,8 @@ private:
 	Derelict::Ref<Derelict::VertexArray> m_SquareVertexArray;
 	Derelict::Ref<Derelict::VertexBuffer> m_SquareBuffer;
 	Derelict::Ref<Derelict::IndexBuffer> m_SquareIndexBuffer;
+
+	Derelict::Ref<Derelict::Texture2D> m_Texture;
 
 	Derelict::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;

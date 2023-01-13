@@ -27,9 +27,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Derelict\src\external\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -73,6 +70,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Derelict\src\vendor\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLTexture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Derelict\src\Derelict\Renderer\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Derelict\src\vendor\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -150,6 +159,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Derelict\src\Derelict\Core\Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Derelict\src\Derelict\Renderer\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLTexture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Derelict\src\vendor\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

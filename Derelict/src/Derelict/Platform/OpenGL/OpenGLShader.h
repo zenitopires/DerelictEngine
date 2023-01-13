@@ -16,6 +16,8 @@ namespace Derelict {
 		virtual void Unbind() const override;
 
 		virtual void UploadMat4(std::string_view name, const glm::mat4& matrix);
+		void UploadFloat3(std::string_view name, const glm::vec3& values);
+		void UploadInt(std::string_view name, int value);
 		virtual void UploadFloat4(std::string_view name, const glm::vec4& values);
 
 	private:
