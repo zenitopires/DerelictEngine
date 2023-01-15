@@ -6,14 +6,15 @@ namespace Derelict {
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
 		: m_RendererID(0)
 	{
-		glCreateBuffers(1, &m_RendererID);
+		glGenBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	}
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
-		glDeleteBuffers(GL_ARRAY_BUFFER, &m_RendererID);
+		//glDeleteBuffers(GL_ARRAY_BUFFER, &m_RendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void OpenGLVertexBuffer::Bind() const

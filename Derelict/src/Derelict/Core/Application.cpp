@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include "Application.h"
-
+#include "Core.h"
 
 #include <SDL3/SDL.h>
 
@@ -19,12 +19,13 @@ namespace Derelict {
 
 		s_Instance = this;
 		WindowProps props("Derelict Engine", 1280, 720, true);
-		m_Window = std::unique_ptr<Window>(Window::Create(props));
-		m_Input = std::unique_ptr<Input>(Input::Create());
+		m_Window = Scope<Window>(Window::Create(props));
+		m_Input = Scope<Input>(Input::Create());
 		m_Input->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
-		m_Timer = std::unique_ptr<Timer>(Timer::Create());
-
+		m_Timer = Scope<Timer>(Timer::Create());
 		m_Timer->Start();
+
+		Renderer::Init();
 	}
 
 	Application::~Application()

@@ -6,4 +6,10 @@ namespace Derelict {
 	{
 		return new OpenGLShader(vertexSource, fragmentSource);
 	}
+
+	Derelict::Shader* Shader::Create(std::filesystem::path path)
+	{
+		return new OpenGLShader(path);
+	}
+
 }

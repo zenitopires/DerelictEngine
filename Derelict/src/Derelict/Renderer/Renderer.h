@@ -10,6 +10,8 @@ namespace Derelict {
 	class Renderer
 	{
 	public:
+		static void Init();
+
 		static void BeginScene(OrthographicCamera& camera); // TODO: Take scene parameters e.g. camera, environment, etc.
 		static void EndScene();
 

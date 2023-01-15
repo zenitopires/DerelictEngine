@@ -202,6 +202,9 @@
     <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLTexture2D.h" />
     <ClInclude Include="Derelict\src\vendor\stb_image.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\Texture.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

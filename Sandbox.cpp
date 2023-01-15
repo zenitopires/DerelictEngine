@@ -49,8 +49,8 @@ public:
 		};
 
 		uint32_t squareIndices[6] = {
-			0,1,3,
-			1,2,3
+			0,1,2,
+			2,3,0
 		};
 
 		m_SquareVertexArray = Derelict::Ref<Derelict::VertexArray>(Derelict::VertexArray::Create());
@@ -101,6 +101,8 @@ public:
 			}
 		)";
 
+		//Shader::Create("assets/shaders/Texture.glsl")
+
 
 		m_Shader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create(vertexSource, fragmentSource));
 
@@ -143,17 +145,14 @@ public:
 
 			layout(location = 0) in vec3 a_Position;
 			layout(location = 1) in vec2 a_TexCoord;
-			out vec3 v_Color;
 			out vec2 v_TexCoord;			
 
-			uniform vec4 u_Red;
 			uniform mat4 u_ViewProjection;
 			uniform mat4 u_Transform;
 
 			void main()
 			{
 				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-				v_Color = vec3(gl_Position);
 				v_TexCoord = a_TexCoord;
 			}
 		)";
@@ -162,25 +161,20 @@ public:
 			#version 330 core
 
 			out vec4 color;
-			in vec3 v_Color;
 			in vec2 v_TexCoord;
-
-			uniform vec4 u_Color;
 
 			uniform sampler2D u_Texture;
 
 			void main()
 			{
-				//color = vec4(0.0, 1.0, 0.0, 1.0f);
-				//color = u_Color;
-				//color = vec4(v_TexCoord, 0.0, 1.0);
+
 				color = texture(u_Texture, v_TexCoord);
 			}
 		)";
 
 		m_TextureShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create(texureShaderVertexSource, texureShaderFragmentSource));
 
-		m_Texture = Derelict::Ref<Derelict::Texture2D>(Derelict::Texture2D::Create("assets/froglok.png"));
+		m_Texture = Derelict::Ref<Derelict::Texture2D>(Derelict::Texture2D::Create("assets/awesomeface.png"));
 		std::dynamic_pointer_cast<Derelict::OpenGLShader>(m_TextureShader)->UploadInt("u_Texture", 0);
 
 	}
