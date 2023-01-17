@@ -3,6 +3,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <vector>
+#include <array>
 #include <iostream>
 #include <fstream>
 
@@ -17,7 +18,8 @@ namespace Derelict {
 		__debugbreak();
 	}
 
-	OpenGLShader::OpenGLShader(std::string_view vertexSource, std::string_view fragmentSource)
+	OpenGLShader::OpenGLShader(std::string_view name, std::string_view vertexSource, std::string_view fragmentSource)
+		: m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSource;
@@ -31,6 +33,7 @@ namespace Derelict {
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
 
+		m_Name = path.filename().string();
 	}
 
 	OpenGLShader::~OpenGLShader()
@@ -75,7 +78,7 @@ namespace Derelict {
 	std::string OpenGLShader::ReadFile(std::filesystem::path path)
 	{
 		std::string result;
-		std::ifstream in(path.c_str(), std::ios::in, std::ios::binary);
+		std::ifstream in(path.c_str(), std::ios::in | std::ios::binary);
 		if (in)
 		{
 			in.seekg(0, std::ios::end);
@@ -103,24 +106,22 @@ namespace Derelict {
 			size_t eol = source.find_first_of("\r\n", pos);
 			if (eol != std::string::npos)
 			{
-				__debugbreak();
-			}
-			size_t begin = pos + typeTokenLength + 1;
-			std::string type = source.substr(begin, eol - begin);
+				size_t begin = pos + typeTokenLength + 1;
+				std::string type = source.substr(begin, eol - begin);
 
-			if (type == "vertex" || type == "fragment" || type == "pixel")
-			{
-				size_t nextLinePos = source.find_first_not_of("\r\n", eol);
-				pos = source.find(typeToken, nextLinePos);
-				shaderSources[ShaderTypeFromString(type)] =
-					source.substr(nextLinePos,
-						pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+				if (type == "vertex" || type == "fragment" || type == "pixel")
+				{
+					size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+					pos = source.find(typeToken, nextLinePos);
+					shaderSources[ShaderTypeFromString(type)] =
+						source.substr(nextLinePos,
+							pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+				}
+				else
+				{
+					__debugbreak();
+				}
 			}
-			else
-			{
-				__debugbreak();
-			}
-
 		}
 
 		return shaderSources;
@@ -128,9 +129,17 @@ namespace Derelict {
 
 	void OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
 	{
-		std::vector<GLenum> shaderIDs(shaderSources.size());
+		if (shaderSources.size() > 2)
+		{
+			// shader sources should not be greater than 2, only need vertex and fragment shaders
+			__debugbreak();
+		}
+
 		GLuint program = glCreateProgram();
 
+		std::array<GLenum, 2> shaderIDs;
+
+		uint32_t index = 0;
 		for (auto& kv : shaderSources)
 		{
 			GLenum type = kv.first;
@@ -165,7 +174,7 @@ namespace Derelict {
 			}
 
 			glAttachShader(program, shader);
-			shaderIDs.push_back(shader);
+			shaderIDs[index++] = shader;
 		}
 		// Vertex and fragment shaders are successfully compiled.
 		// Now time to link them together into a program.

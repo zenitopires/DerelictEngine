@@ -3,7 +3,6 @@
 #include "Derelict/src/Derelict/Platform/OpenGL/OpenGLShader.h"
 #include "Derelict/src/Derelict/Platform/OpenGL/OpenGLTexture2D.h"
 
-
 #include <glad/glad.h>
 #include <SDL3/SDL.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -101,10 +100,9 @@ public:
 			}
 		)";
 
-		//Shader::Create("assets/shaders/Texture.glsl")
 
 
-		m_Shader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create(vertexSource, fragmentSource));
+		m_Shader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create("TriangleShader", vertexSource, fragmentSource));
 
 		std::string flatColorShaderVertexSource = R"(
 			#version 330 core
@@ -138,44 +136,14 @@ public:
 			}
 		)";
 
-		m_FlatColorShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create(flatColorShaderVertexSource, flatColorShaderFragmentSource));
+		m_FlatColorShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create("FlatColor", flatColorShaderVertexSource, flatColorShaderFragmentSource));
 
-		std::string texureShaderVertexSource = R"(
-			#version 330 core
+		//m_TextureShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create("assets/shaders/Texture.glsl"));
 
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec2 a_TexCoord;
-			out vec2 v_TexCoord;			
-
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Transform;
-
-			void main()
-			{
-				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-				v_TexCoord = a_TexCoord;
-			}
-		)";
-
-		std::string texureShaderFragmentSource = R"(
-			#version 330 core
-
-			out vec4 color;
-			in vec2 v_TexCoord;
-
-			uniform sampler2D u_Texture;
-
-			void main()
-			{
-
-				color = texture(u_Texture, v_TexCoord);
-			}
-		)";
-
-		m_TextureShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create(texureShaderVertexSource, texureShaderFragmentSource));
+		auto textureShader = m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
 
 		m_Texture = Derelict::Ref<Derelict::Texture2D>(Derelict::Texture2D::Create("assets/awesomeface.png"));
-		std::dynamic_pointer_cast<Derelict::OpenGLShader>(m_TextureShader)->UploadInt("u_Texture", 0);
+		std::dynamic_pointer_cast<Derelict::OpenGLShader>(textureShader)->UploadInt("u_Texture", 0);
 
 	}
 
@@ -244,8 +212,9 @@ public:
 				}
 			}
 
+			auto textureShader = m_ShaderLibrary.Get("Texture.glsl");
 			m_Texture->Bind();
-			Derelict::Renderer::Submit(m_TextureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+			Derelict::Renderer::Submit(textureShader, m_SquareVertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 			//Derelict::Renderer::Submit(m_Shader, m_VertexArray, test);
 		}
@@ -259,8 +228,10 @@ public:
 	}
 
 private:
+	Derelict::ShaderLibrary m_ShaderLibrary;
+
 	Derelict::Ref<Derelict::Shader> m_Shader;
-	Derelict::Ref<Derelict::Shader> m_FlatColorShader, m_TextureShader;
+	Derelict::Ref<Derelict::Shader> m_FlatColorShader;
 
 	Derelict::Ref<Derelict::VertexArray> m_VertexArray;
 	Derelict::Ref<Derelict::VertexBuffer> m_VertexBuffer;

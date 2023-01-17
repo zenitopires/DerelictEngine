@@ -148,13 +148,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Derelict\src\Derelict\ECS\ComponentArray.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\ECS\EntityComponentSystem.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\ECS\EntityManager.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Renderer\Buffer.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Core\Application.cpp" />
     <ClCompile Include="Derelict\src\vendor\glad.c" />
     <ClCompile Include="Derelict\src\Derelict\Core\Layer.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Core\LayerStack.cpp" />
     <ClCompile Include="Derelict\src\vendor\stb_image.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLVertexArray.cpp" />
@@ -173,6 +176,7 @@
     <ClCompile Include="Derelict\src\Derelict\Renderer\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Derelict\src\Derelict\ECS\ComponentArray.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Core.h" />
     <ClInclude Include="Derelict\src\Derelict\Renderer\Buffer.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Input.h" />
@@ -201,6 +205,8 @@
     <ClInclude Include="Derelict\src\Derelict\Renderer\Texture.h" />
     <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLTexture2D.h" />
     <ClInclude Include="Derelict\src\vendor\stb_image.h" />
+    <ClInclude Include="Derelict\src\Derelict\ECS\EntityComponentSystem.h" />
+    <ClInclude Include="Derelict\src\Derelict\ECS\EntityManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\Texture.glsl" />
