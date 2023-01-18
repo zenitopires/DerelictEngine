@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Derelict\src\Derelict\ECS\ComponentManager.cpp" />
     <ClCompile Include="Derelict\src\Derelict\ECS\ComponentArray.cpp" />
     <ClCompile Include="Derelict\src\Derelict\ECS\EntityComponentSystem.cpp" />
     <ClCompile Include="Derelict\src\Derelict\ECS\EntityManager.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="Derelict\src\Derelict\Renderer\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Derelict\src\Derelict\ECS\ComponentManager.h" />
     <ClInclude Include="Derelict\src\Derelict\ECS\ComponentArray.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Core.h" />
     <ClInclude Include="Derelict\src\Derelict\Renderer\Buffer.h" />
