@@ -148,10 +148,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Derelict\src\Derelict\ECS\ComponentManager.cpp" />
-    <ClCompile Include="Derelict\src\Derelict\ECS\ComponentArray.cpp" />
-    <ClCompile Include="Derelict\src\Derelict\ECS\EntityComponentSystem.cpp" />
-    <ClCompile Include="Derelict\src\Derelict\ECS\EntityManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Renderer\Buffer.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Core\Application.cpp" />
@@ -168,6 +164,7 @@
     <ClCompile Include="Derelict\src\Derelict\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLTexture2D.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Core\OrthographicCameraController.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.cpp" />
@@ -177,8 +174,6 @@
     <ClCompile Include="Derelict\src\Derelict\Renderer\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Derelict\src\Derelict\ECS\ComponentManager.h" />
-    <ClInclude Include="Derelict\src\Derelict\ECS\ComponentArray.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Core.h" />
     <ClInclude Include="Derelict\src\Derelict\Renderer\Buffer.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\Input.h" />
@@ -207,8 +202,7 @@
     <ClInclude Include="Derelict\src\Derelict\Renderer\Texture.h" />
     <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLTexture2D.h" />
     <ClInclude Include="Derelict\src\vendor\stb_image.h" />
-    <ClInclude Include="Derelict\src\Derelict\ECS\EntityComponentSystem.h" />
-    <ClInclude Include="Derelict\src\Derelict\ECS\EntityManager.h" />
+    <ClInclude Include="Derelict\src\Derelict\Core\OrthographicCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\Texture.glsl" />

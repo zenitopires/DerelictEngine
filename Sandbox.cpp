@@ -152,40 +152,11 @@ public:
 		Derelict::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
 		Derelict::RenderCommand::Clear();
 
-		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_A))
-		{
-			m_CameraPosition.x -= 1.0f * deltaTime;
-		}
-		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_D))
-		{
-			m_CameraPosition.x += 1.0f * deltaTime;
-		}
-		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_S))
-		{
-			m_CameraPosition.y -= 1.0f * deltaTime;
-		}
-		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_W))
-		{
-			m_CameraPosition.y += 1.0f * deltaTime;
+		if (Derelict::Input::IsMouseButtonPressed(1)) {
+			std::cout << "Mouse 1 pressed\n";
 		}
 
 
-		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_J))
-		{
-			m_TrianglePosition.x -= 1.0f * deltaTime;
-		}
-		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_L))
-		{
-			m_TrianglePosition.x += 1.0f * deltaTime;
-		}
-		if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_I))
-		{
-			m_TrianglePosition.y += 1.0f * deltaTime;
-		}
-		else if (Derelict::Input::IsKeyPressed(SDL_SCANCODE_K))
-		{
-			m_TrianglePosition.y -= 1.0f * deltaTime;
-		}
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 		Derelict::Renderer::BeginScene(m_Camera);

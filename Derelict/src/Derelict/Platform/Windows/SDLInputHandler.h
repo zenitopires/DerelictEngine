@@ -17,6 +17,7 @@ namespace Derelict {
 
 		virtual bool KeyPressedImpl(int keycode) override;
 		virtual bool MouseButtonPressedImpl(int button) override;
+		virtual bool MouseScrollImpl() override;
 		virtual bool GetMouseXImpl() override;
 		virtual bool GetMouseYImpl() override;
 		void OnUpdate();

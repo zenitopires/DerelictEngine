@@ -49,8 +49,8 @@ namespace Derelict {
 
 	bool SDLInputHandler::KeyPressedImpl(int scancode)
 	{
-		const Uint8* keys = SDL_GetKeyboardState(NULL);
 		SDL_PumpEvents();
+		const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 		if (keys[scancode] == 1)
 			return true;
@@ -59,7 +59,14 @@ namespace Derelict {
 
 	bool SDLInputHandler::MouseButtonPressedImpl(int button)
 	{
-		return true;
+		SDL_PumpEvents();
+		Uint8 buttons = SDL_GetMouseState(nullptr, nullptr);
+		return (buttons & button) != 0;
+	}
+
+	bool SDLInputHandler::MouseScrollImpl()
+	{
+		return false;
 	}
 
 	bool SDLInputHandler::GetMouseXImpl()
