@@ -39,6 +39,7 @@ namespace Derelict {
 			unsigned int Width, Height;
 			bool vsync;
 			EventCallbackFn EventCallback;
+			SDL_Event Event;
 		};
 
 		WindowData m_Data;

@@ -1,5 +1,9 @@
 #include "WindowsWindow.h"
 
+#include "../../Events/ApplicationEvent.h"
+#include "../../Events/KeyEvent.h"
+#include "../../Events/MouseEvent.h"
+
 #include <iostream>
 
 #include <glad/glad.h>
@@ -26,6 +30,35 @@ namespace Derelict
 	void WindowsWindow::OnUpdate()
 	{
 		SDL_GL_SwapWindow(m_Window);
+		while (SDL_PollEvent(&m_Data.Event))
+		{
+			switch (m_Data.Event.type)
+			{
+			case SDL_EVENT_QUIT:
+			{
+				WindowCloseEvent event;
+				m_Data.EventCallback(event);
+				break;
+			}
+			case SDL_EVENT_KEY_DOWN:
+			{
+				KeyPressedEvent event(m_Data.Event.key.keysym.sym, 0);
+				m_Data.EventCallback(event);
+				break;
+			}
+			case SDL_EVENT_KEY_UP:
+			{
+				KeyReleasedEvent event(m_Data.Event.key.keysym.sym);
+				m_Data.EventCallback(event);
+			}
+			case SDL_EVENT_MOUSE_WHEEL:
+			{
+				std::cout << "Mouse scroll event\n";
+				MouseScrollEvent event(m_Data.Event.wheel.x, m_Data.Event.wheel.y);
+				m_Data.EventCallback(event);
+			}
+			}
+		}
 	}
 
 	void WindowsWindow::Init(const WindowProps& props)
@@ -62,7 +95,7 @@ namespace Derelict
 			SDL_WINDOWPOS_UNDEFINED,
 			props.Width, props.Height, 
 			// This should depend upon the renderer's configurations
-			SDL_WINDOW_OPENGL);
+			SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 		if (m_Window == nullptr)
 		{

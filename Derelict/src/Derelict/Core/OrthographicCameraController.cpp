@@ -15,22 +15,23 @@ namespace Derelict {
 	{
 		if (Input::IsKeyPressed(SDL_SCANCODE_A))
 		{
-			m_CameraPosition.x -= 1.0f * deltaTime;
+			m_CameraPosition.x -= m_CameraTranslationSpeed * deltaTime;
 		}
 		else if (Input::IsKeyPressed(SDL_SCANCODE_D))
 		{
-			m_CameraPosition.x += 1.0f * deltaTime;
+			m_CameraPosition.x += m_CameraTranslationSpeed * deltaTime;
 		}
 		if (Input::IsKeyPressed(SDL_SCANCODE_S))
 		{
-			m_CameraPosition.y -= 1.0f * deltaTime;
+			m_CameraPosition.y -= m_CameraTranslationSpeed * deltaTime;
 		}
 		else if (Input::IsKeyPressed(SDL_SCANCODE_W))
 		{
-			m_CameraPosition.y += 1.0f * deltaTime;
+			m_CameraPosition.y += m_CameraTranslationSpeed * deltaTime;
 		}
 
 		m_Camera.SetPosition(m_CameraPosition);
+		m_CameraTranslationSpeed = m_ZoomLevel;
 
 	}
 
@@ -42,7 +43,9 @@ namespace Derelict {
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrollEvent& e)
 	{
-		m_ZoomLevel -= e.GetYOffset();
+		m_ZoomLevel -= e.GetYOffset() * 0.05f;
+		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
+		m_ZoomLevel = std::min(m_ZoomLevel, 10.0f);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}

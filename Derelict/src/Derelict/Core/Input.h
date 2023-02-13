@@ -13,13 +13,11 @@ namespace Derelict {
 		inline static bool IsMouseButtonPressed(int button) { return s_Instance->MouseButtonPressedImpl(button); }
 
 		static Input* Create();
-		virtual void OnUpdate() = 0;
 		virtual bool KeyPressedImpl(int keycode) = 0;
 		virtual bool MouseButtonPressedImpl(int button) = 0;
 		virtual bool MouseScrollImpl() = 0;
 		virtual bool GetMouseXImpl() = 0;
 		virtual bool GetMouseYImpl() = 0;
-		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 
 	private:
 		static Input* s_Instance;

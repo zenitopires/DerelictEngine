@@ -20,22 +20,7 @@ namespace Derelict {
 		virtual bool MouseScrollImpl() override;
 		virtual bool GetMouseXImpl() override;
 		virtual bool GetMouseYImpl() override;
-		void OnUpdate();
 
-		inline void SetEventCallback(const EventCallbackFn& callback) 
-		{
-			m_Data.callback = callback;
-		}
-
-
-	private:
-		struct InputData
-		{
-			SDL_Event Event;
-			EventCallbackFn callback;
-		};
-		
-		InputData m_Data;
 	};
 }
 

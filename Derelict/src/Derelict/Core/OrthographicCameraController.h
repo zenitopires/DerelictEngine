@@ -33,6 +33,7 @@ namespace Derelict {
 
 		OrthographicCamera m_Camera;
 
+		float m_CameraTranslationSpeed = 100.0f;
 		bool m_Rotation;
 		glm::vec3 m_CameraPosition;
 	};

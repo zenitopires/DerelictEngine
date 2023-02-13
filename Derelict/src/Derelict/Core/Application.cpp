@@ -21,7 +21,7 @@ namespace Derelict {
 		WindowProps props("Derelict Engine", 1280, 720, true);
 		m_Window = Scope<Window>(Window::Create(props));
 		m_Input = Scope<Input>(Input::Create());
-		m_Input->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 		m_Timer = Scope<Timer>(Timer::Create());
 		m_Timer->Start();
 
@@ -92,7 +92,7 @@ namespace Derelict {
 				layer->OnUpdate(m_Timer->DeltaTime());
 			}
 
-			m_Input->OnUpdate();
+			//m_Input->OnUpdate();
 			m_Window->OnUpdate();
 		}
 		m_Timer->Stop();
