@@ -51,6 +51,12 @@ namespace Derelict {
 		return true;
 	}
 
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		glViewport(0, 0, e.GetWidth(), e.GetHeight());
+		return true;
+	}
+
 	void Application::OnEvent(Event& event)
 	{
 		//std::cout << event.ToString() << '\n';
@@ -60,6 +66,8 @@ namespace Derelict {
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(Application::OnKeyPressed));
 		dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(Application::OnKeyReleased));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
+
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) 
 		{

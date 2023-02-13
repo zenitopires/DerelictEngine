@@ -50,12 +50,30 @@ namespace Derelict
 			{
 				KeyReleasedEvent event(m_Data.Event.key.keysym.sym);
 				m_Data.EventCallback(event);
+				break;
 			}
 			case SDL_EVENT_MOUSE_WHEEL:
 			{
-				std::cout << "Mouse scroll event\n";
 				MouseScrollEvent event(m_Data.Event.wheel.x, m_Data.Event.wheel.y);
 				m_Data.EventCallback(event);
+				break;
+			}
+			case SDL_EVENT_WINDOW_RESIZED:
+			{
+				WindowResizeEvent event(m_Data.Event.window.data1, m_Data.Event.window.data2);
+				m_Data.EventCallback(event);
+				std::cout << event << '\n';
+				break;
+			}
+			case SDL_EVENT_WINDOW_MINIMIZED:
+			{
+				std::cout << "Window has been minimized\n";
+				break;
+			}
+			case SDL_EVENT_WINDOW_MAXIMIZED:
+			{
+				std::cout << "Window has been maximized\n";
+				break;
 			}
 			}
 		}

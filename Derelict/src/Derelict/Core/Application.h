@@ -34,6 +34,7 @@ namespace Derelict {
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnKeyReleased(KeyReleasedEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 	protected:
 		Scope<Derelict::Window> m_Window;
