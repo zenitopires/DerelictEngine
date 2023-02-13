@@ -6,7 +6,7 @@
 namespace Derelict {
 
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
-		: m_Camera(-aspectRatio * m_ZoomLevel, +m_ZoomLevel * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
+		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
 	{
 
 	}
@@ -30,6 +30,8 @@ namespace Derelict {
 			m_CameraPosition.y += 1.0f * deltaTime;
 		}
 
+		m_Camera.SetPosition(m_CameraPosition);
+
 	}
 
 	void OrthographicCameraController::OnEvent(Event& e)
@@ -41,11 +43,14 @@ namespace Derelict {
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrollEvent& e)
 	{
 		m_ZoomLevel -= e.GetYOffset();
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}
 
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
+		m_AspectRatio -= (float)e.GetWidth() / (float)e.GetHeight();
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}
 

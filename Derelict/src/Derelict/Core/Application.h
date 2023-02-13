@@ -9,7 +9,6 @@
 #include "../Renderer/VertexArray.h"
 #include "../Renderer/Shader.h"
 #include "../Renderer/Renderer.h"
-#include "../Renderer/OrthographicCamera.h"
 #include "../Events/ApplicationEvent.h"
 #include "../Events/KeyEvent.h"
 
@@ -36,9 +35,10 @@ namespace Derelict {
 		bool OnKeyPressed(KeyPressedEvent& e);
 		bool OnKeyReleased(KeyReleasedEvent& e);
 
+	protected:
+		Scope<Derelict::Window> m_Window;
 	private:
 		bool m_Running = true;
-		Scope<Derelict::Window> m_Window;
 		Scope<Derelict::Input> m_Input;
 		Scope<Derelict::Timer> m_Timer;
 		LayerStack m_LayerStack;

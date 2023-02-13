@@ -2,7 +2,10 @@
 #include "../../Core/Application.h"
 #include "../../Events/ApplicationEvent.h"
 #include "../../Events/KeyEvent.h"
+#include "../../Events/MouseEvent.h"
 
+
+#include <SDL3/SDL.h>
 
 #include <iostream>
 
@@ -28,21 +31,29 @@ namespace Derelict {
 		{
 			switch (m_Data.Event.type)
 			{
-			case SDL_QUIT:
+			case SDL_EVENT_QUIT:
 			{
 				WindowCloseEvent event;
 				m_Data.callback(event);
 				break;
 			}
-			case SDL_KEYDOWN:
+			case SDL_EVENT_KEY_DOWN:
 			{
 				KeyPressedEvent event(m_Data.Event.key.keysym.sym, 0);
 				m_Data.callback(event);
 				break;
 			}
-			case SDL_KEYUP:
+			case SDL_EVENT_KEY_UP:
+			{
 				KeyReleasedEvent event(m_Data.Event.key.keysym.sym);
 				m_Data.callback(event);
+			}
+			case SDL_EVENT_MOUSE_WHEEL:
+			{
+				std::cout << "Mouse scroll event\n";
+				MouseScrollEvent event(m_Data.Event.wheel.x, m_Data.Event.wheel.y);
+				m_Data.callback(event);
+			}
 			}
 		}
 	}
@@ -66,6 +77,7 @@ namespace Derelict {
 
 	bool SDLInputHandler::MouseScrollImpl()
 	{
+
 		return false;
 	}
 

@@ -60,6 +60,13 @@ namespace Derelict {
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(Application::OnKeyPressed));
 		dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(Application::OnKeyReleased));
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); ) 
+		{
+			(*--it)->OnEvent(event);
+			if (event.Handled)
+				break;
+		}
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -79,9 +86,6 @@ namespace Derelict {
 		while (m_Running)
 		{
 			m_Timer->Tick();
-
-			std::cout << std::fixed;
-			std::cout << m_Timer->DeltaTime() * 1000 << std::endl;
 
 			for (Layer* layer : m_LayerStack)
 			{

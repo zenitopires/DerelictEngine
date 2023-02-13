@@ -2,6 +2,7 @@
 #include "Derelict/src/Derelict/Core/Application.h"
 #include "Derelict/src/Derelict/Platform/OpenGL/OpenGLShader.h"
 #include "Derelict/src/Derelict/Platform/OpenGL/OpenGLTexture2D.h"
+#include "Derelict/src/Derelict/Core/OrthographicCameraController.h"
 
 #include <glad/glad.h>
 #include <SDL3/SDL.h>
@@ -14,7 +15,7 @@ class TestLayer : public Derelict::Layer
 {
 public:
 	TestLayer() : Layer("Test Bed") ,
-		m_Camera(-1.6f, 1.6f, -0.9f, 0.9f),
+		m_CameraController(1280.0f/720.0f),
 		m_TrianglePosition(0.0f)
 	{
 		float vertices[3 * 3] = {
@@ -149,20 +150,14 @@ public:
 
 	void OnUpdate(float deltaTime) override
 	{
+		m_CameraController.OnUpdate(deltaTime);
+
 		Derelict::RenderCommand::SetClearColor({ 0.15f, 0.15f, 0.15f, 1.0f });
 		Derelict::RenderCommand::Clear();
 
-		if (Derelict::Input::IsMouseButtonPressed(1)) {
-			std::cout << "Mouse 1 pressed\n";
-		}
-
-
-
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-		Derelict::Renderer::BeginScene(m_Camera);
+		Derelict::Renderer::BeginScene(m_CameraController.GetCamera());
 		{
-			m_Camera.SetPosition(m_CameraPosition);
-			m_Camera.SetRotation(m_CameraRotation);
 			glm::mat4 test = glm::translate(glm::mat4(1.0f), m_TrianglePosition);
 			glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.0f);
 			glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.0f);
@@ -195,7 +190,7 @@ public:
 
 	void OnEvent(Derelict::Event& event) override
 	{
-
+		m_CameraController.OnEvent(event);
 	}
 
 private:
@@ -214,7 +209,7 @@ private:
 
 	Derelict::Ref<Derelict::Texture2D> m_Texture;
 
-	Derelict::OrthographicCamera m_Camera;
+	Derelict::OrthographicCameraController m_CameraController;
 	glm::vec3 m_CameraPosition;
 	float m_CameraRotation;
 

@@ -16,6 +16,10 @@ namespace Derelict {
 	public:
 		OrthographicCameraController(float aspectRatio, bool rotation = false); // aspect ration * 2 units
 
+		OrthographicCamera& GetCamera() { return m_Camera; }
+		const OrthographicCamera& GetCamera() const { return m_Camera; }
+
+
 		void OnUpdate(float deltaTime);
 		void OnEvent(Event& e);
 
