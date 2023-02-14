@@ -26,6 +26,7 @@ namespace Derelict {
 		m_Timer->Start();
 
 		Renderer::Init();
+		RenderCommand::Init();
 	}
 
 	Application::~Application()
@@ -53,7 +54,7 @@ namespace Derelict {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
-		glViewport(0, 0, e.GetWidth(), e.GetHeight());
+		RenderCommand::SetViewport(e.GetWidth(), e.GetHeight());
 		return true;
 	}
 

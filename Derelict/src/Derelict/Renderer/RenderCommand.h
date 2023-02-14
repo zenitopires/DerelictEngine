@@ -17,6 +17,7 @@ namespace Derelict {
 		{
 			s_RendererAPI->DrawIndexed(vertexArray);
 		}
+		inline static void SetViewport(float width, float height) { s_RendererAPI->SetViewport(width, height); }
 	private:
 		static RendererAPI* s_RendererAPI;
 	};

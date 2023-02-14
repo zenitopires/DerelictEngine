@@ -27,4 +27,9 @@ namespace Derelict {
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
+	void OpenGLRendererAPI::SetViewport(float width, float height)
+	{
+		glViewport(0, 0, width, height);
+	}
+
 }
