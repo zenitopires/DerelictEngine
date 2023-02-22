@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Core/Core.h"
+
 #include <vector>
 #include <cstdint>
 #include <string>
@@ -109,7 +111,7 @@ namespace Derelict {
 		virtual void SetLayout(const AttributeLayout& layout) = 0;
 		virtual const AttributeLayout& GetLayout() const = 0;
 
-		static VertexBuffer* Create(float* vertices, uint32_t size);
+		static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
 	};
 
 	class IndexBuffer

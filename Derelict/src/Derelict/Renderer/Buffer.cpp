@@ -2,9 +2,9 @@
 #include "../Platform/OpenGL/OpenGLBuffer.h"
 
 namespace Derelict {
-	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
+	Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
 	{
-		return new OpenGLVertexBuffer(vertices, size);
+		return std::make_shared<OpenGLVertexBuffer>(OpenGLVertexBuffer(vertices, size));
 	}
 
 	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t count)

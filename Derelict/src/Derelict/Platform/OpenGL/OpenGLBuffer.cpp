@@ -4,7 +4,6 @@
 
 namespace Derelict {
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
-		: m_RendererID(0)
 	{
 		glGenBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -28,7 +27,7 @@ namespace Derelict {
 	}
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
-		: m_RendererID(0), m_Count(count)
+		: m_Count(count)
 	{
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);

@@ -3,9 +3,9 @@
 
 namespace Derelict {
 
-	Derelict::VertexArray* VertexArray::Create()
+	Ref<VertexArray> VertexArray::Create()
 	{
-		return new OpenGLVertexArray();
+		return std::make_shared<OpenGLVertexArray>();
 	}
 
 }

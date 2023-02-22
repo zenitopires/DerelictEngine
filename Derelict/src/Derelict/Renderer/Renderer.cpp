@@ -2,6 +2,7 @@
 
 #include "../Core/Core.h"
 #include "../Platform/OpenGL/OpenGLShader.h"
+#include "Renderer2D.h"
 
 // Renderer is in charge of abstraction such as bind vertex array, bind the shaders,
 // set up the materials, do all the sorting, etc...
@@ -13,6 +14,7 @@ namespace Derelict {
 	void Renderer::Init()
 	{
 		RenderCommand::Init();
+		Renderer2D::Init();
 	}
 
 	void Renderer::BeginScene(OrthographicCamera& camera)

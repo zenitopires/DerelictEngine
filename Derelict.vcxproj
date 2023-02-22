@@ -165,6 +165,7 @@
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLTexture2D.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Core\OrthographicCameraController.cpp" />
+    <ClCompile Include="Derelict\src\Derelict\Renderer\Renderer2D.cpp" />
     <ClCompile Include="Sandbox.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\SDLInputHandler.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="Derelict\src\Derelict\Renderer\VertexArray.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Platform\Windows\WindowsTimer.cpp" />
     <ClCompile Include="Derelict\src\Derelict\Renderer\Texture.cpp" />
+    <ClCompile Include="Sandbox2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Derelict\src\Derelict\Core\Core.h" />
@@ -203,6 +205,8 @@
     <ClInclude Include="Derelict\src\Derelict\Platform\OpenGL\OpenGLTexture2D.h" />
     <ClInclude Include="Derelict\src\vendor\stb_image.h" />
     <ClInclude Include="Derelict\src\Derelict\Core\OrthographicCameraController.h" />
+    <ClInclude Include="Derelict\src\Derelict\Renderer\Renderer2D.h" />
+    <ClInclude Include="Sandbox2D.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\Texture.glsl" />
