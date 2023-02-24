@@ -15,8 +15,13 @@ namespace Derelict {
 		OpenGLShader(std::string_view name, std::string_view vertexSource, std::string_view fragmentSource);
 		OpenGLShader(std::filesystem::path path);
 		virtual ~OpenGLShader() override;
+
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		virtual void SetFloat3(std::string_view name, const glm::vec3& value) override;
+		virtual void SetFloat4(std::string_view name, const glm::vec4& value) override;
+		virtual void SetMat4(std::string_view name, const glm::mat4& value) override;
 
 		virtual const std::string GetName() const override { return m_Name; }
 

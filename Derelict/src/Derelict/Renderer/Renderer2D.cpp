@@ -5,7 +5,8 @@
 #include "Shader.h"
 #include "Buffer.h"
 #include "RenderCommand.h"
-#include "../Platform/OpenGL/OpenGLShader.h"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Derelict {
 
@@ -58,8 +59,8 @@ namespace Derelict {
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		std::dynamic_pointer_cast<OpenGLShader>(s_Data->squareShader)->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(s_Data->squareShader)->UploadMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data->squareShader->Bind();
+		s_Data->squareShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
@@ -69,16 +70,19 @@ namespace Derelict {
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color /*= { 0.5f, 0.5f, 0.5f, 1.0f } */)
 	{
-		std::dynamic_pointer_cast<OpenGLShader>(s_Data->squareShader)->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(s_Data->squareShader)->UploadFloat4("u_Color", color);
-
-		s_Data->squareVA->Bind();
-		RenderCommand::DrawIndexed(s_Data->squareVA);
+		DrawQuad({ position.x, position.y, 0.0f }, scale, color);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& scale, const glm::vec4& color /*= { 0.5f, 0.5f, 0.5f, 1.0f }*/)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, scale, color);
+		s_Data->squareShader->Bind();
+		s_Data->squareShader->SetFloat4("u_Color", color);
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { scale.x, scale.y, 0.0f });
+		s_Data->squareShader->SetMat4("u_Transform", glm::mat4(1.0f) * transform);
+
+		s_Data->squareVA->Bind();
+		RenderCommand::DrawIndexed(s_Data->squareVA);
 	}
 
 }

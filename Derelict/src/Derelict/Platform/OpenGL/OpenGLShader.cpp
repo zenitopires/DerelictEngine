@@ -51,6 +51,21 @@ namespace Derelict {
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetFloat3(std::string_view name, const glm::vec3& value)
+	{
+		UploadFloat3(name, value);
+	}
+
+	void OpenGLShader::SetFloat4(std::string_view name, const glm::vec4& value)
+	{
+		UploadFloat4(name, value);
+	}
+
+	void OpenGLShader::SetMat4(std::string_view name, const glm::mat4& value)
+	{
+		UploadMat4(name, value);
+	}
+
 	void OpenGLShader::UploadMat4(std::string_view name, const glm::mat4& matrix)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.data());
