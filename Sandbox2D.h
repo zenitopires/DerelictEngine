@@ -9,7 +9,7 @@
 class Sandbox2D : public Derelict::Layer
 {
 public:
-	Sandbox2D();
+	Sandbox2D(Derelict::Ref<Derelict::Timer> timer);
 	~Sandbox2D();
 	void OnUpdate(float deltaTime) override;
 	void OnEvent(Derelict::Event& event) override;
@@ -35,6 +35,8 @@ private:
 	Derelict::OrthographicCameraController m_CameraController;
 	glm::vec3 m_CameraPosition;
 	float m_CameraRotation;
+
+	Derelict::Ref<Derelict::Timer> m_Timer;
 
 	glm::vec3 m_TrianglePosition;
 

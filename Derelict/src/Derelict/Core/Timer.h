@@ -11,7 +11,6 @@ namespace Derelict {
 		virtual float GetSeconds() const = 0;
 		virtual float GetMilliseconds() const = 0;
 
-		virtual float GameTime() const = 0;
 		virtual float DeltaTime() const = 0;
 		virtual float TotalTime() const = 0;
 

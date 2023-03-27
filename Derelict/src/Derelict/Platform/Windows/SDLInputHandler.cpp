@@ -25,39 +25,6 @@ namespace Derelict {
 	{
 	}
 
-	//void SDLInputHandler::OnUpdate()
-	//{
-	//	while (SDL_PollEvent(&m_Data.Event))
-	//	{
-	//		switch (m_Data.Event.type)
-	//		{
-	//		case SDL_EVENT_QUIT:
-	//		{
-	//			WindowCloseEvent event;
-	//			m_Data.callback(event);
-	//			break;
-	//		}
-	//		case SDL_EVENT_KEY_DOWN:
-	//		{
-	//			KeyPressedEvent event(m_Data.Event.key.keysym.sym, 0);
-	//			m_Data.callback(event);
-	//			break;
-	//		}
-	//		case SDL_EVENT_KEY_UP:
-	//		{
-	//			KeyReleasedEvent event(m_Data.Event.key.keysym.sym);
-	//			m_Data.callback(event);
-	//		}
-	//		case SDL_EVENT_MOUSE_WHEEL:
-	//		{
-	//			std::cout << "Mouse scroll event\n";
-	//			MouseScrollEvent event(m_Data.Event.wheel.x, m_Data.Event.wheel.y);
-	//			m_Data.callback(event);
-	//		}
-	//		}
-	//	}
-	//}
-
 	bool SDLInputHandler::KeyPressedImpl(int scancode)
 	{
 		SDL_PumpEvents();

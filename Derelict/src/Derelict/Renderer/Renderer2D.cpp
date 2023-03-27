@@ -12,8 +12,9 @@ namespace Derelict {
 
 	struct Renderer2DStorage
 	{
-		Ref<VertexArray> squareVA;
-		Ref<Shader> squareShader;
+		Ref<VertexArray> SquareVA;
+		Ref<Shader> SquareShader;
+		Ref<Shader> TextureShader;
 	};
 
 	static Renderer2DStorage* s_Data;
@@ -23,17 +24,17 @@ namespace Derelict {
 		s_Data = new Renderer2DStorage;
 
 		float vertices[5 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.5f, 0.5f,  0.0f,
-			-0.5f, 0.5f, 0.0f
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			0.5f, 0.5f,  0.0f, 1.0f, 1.0f,
+			-0.5f, 0.5f, 0.0f, 0.0f, 1.0f
 		};
 
 		uint32_t indices[6] = {
 			0,1,2,2,3,0
 		};
 
-		s_Data->squareVA = Derelict::VertexArray::Create();
+		s_Data->SquareVA = Derelict::VertexArray::Create();
 
 		Ref<VertexBuffer> m_VertexBuffer;
 		m_VertexBuffer = Derelict::VertexBuffer::Create(vertices, sizeof(vertices));
@@ -43,13 +44,18 @@ namespace Derelict {
 
 		Derelict::AttributeLayout layout = {
 			{ Derelict::ShaderDataType::Float3, "a_Position"},
+			{ Derelict::ShaderDataType::Float2, "a_TexCoord"}
 		};
 
 		m_VertexBuffer->SetLayout(layout);
-		s_Data->squareVA->AddVertexBuffer(m_VertexBuffer);
-		s_Data->squareVA->SetIndexBuffer(m_IndexBuffer);
+		s_Data->SquareVA->AddVertexBuffer(m_VertexBuffer);
+		s_Data->SquareVA->SetIndexBuffer(m_IndexBuffer);
 
-		s_Data->squareShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create("assets/shaders/Square.glsl"));
+		s_Data->SquareShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create("assets/shaders/Square.glsl"));
+		s_Data->TextureShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create("assets/shaders/Texture.glsl"));
+
+		s_Data->TextureShader->Bind();
+		s_Data->TextureShader->SetInt("u_Texture", 0);
 	}
 
 	void Renderer2D::Shutdown()
@@ -59,8 +65,11 @@ namespace Derelict {
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		s_Data->squareShader->Bind();
-		s_Data->squareShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data->SquareShader->Bind();
+		s_Data->SquareShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		s_Data->TextureShader->Bind();
+		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
@@ -68,21 +77,39 @@ namespace Derelict {
 
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color /*= { 0.5f, 0.5f, 0.5f, 1.0f } */)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& scale, const glm::vec4& color)
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, scale, color);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& scale, const glm::vec4& color /*= { 0.5f, 0.5f, 0.5f, 1.0f }*/)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& scale, const glm::vec4& color)
 	{
-		s_Data->squareShader->Bind();
-		s_Data->squareShader->SetFloat4("u_Color", color);
+		s_Data->SquareShader->Bind();
+		s_Data->SquareShader->SetFloat4("u_Color", color);
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { scale.x, scale.y, 0.0f });
-		s_Data->squareShader->SetMat4("u_Transform", glm::mat4(1.0f) * transform);
+		s_Data->SquareShader->SetMat4("u_Transform", glm::mat4(1.0f) * transform);
 
-		s_Data->squareVA->Bind();
-		RenderCommand::DrawIndexed(s_Data->squareVA);
+		s_Data->SquareVA->Bind();
+		RenderCommand::DrawIndexed(s_Data->SquareVA);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& scale, const Ref<Texture> texture)
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, scale, texture);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& scale, const Ref<Texture> texture)
+	{
+		s_Data->TextureShader->Bind();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { scale.x, scale.y, 0.0f });
+		s_Data->TextureShader->SetMat4("u_Transform", glm::mat4(1.0f) * transform);
+
+		texture->Bind();
+
+		s_Data->SquareVA->Bind();
+		RenderCommand::DrawIndexed(s_Data->SquareVA);
 	}
 
 }

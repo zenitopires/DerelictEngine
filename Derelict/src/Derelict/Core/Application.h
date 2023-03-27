@@ -36,12 +36,13 @@ namespace Derelict {
 		bool OnKeyReleased(KeyReleasedEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
 
+	public:
+		Ref<Derelict::Timer> m_Timer;
 	protected:
 		Scope<Derelict::Window> m_Window;
 	private:
 		bool m_Running = true;
 		Scope<Derelict::Input> m_Input;
-		Scope<Derelict::Timer> m_Timer;
 		LayerStack m_LayerStack;
 		uint64_t m_LastFrameTime = 0;
 

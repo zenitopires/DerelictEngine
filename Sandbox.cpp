@@ -11,7 +11,7 @@ class Sandbox : public Derelict::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new Sandbox2D());
+		PushLayer(new Sandbox2D(m_Timer));
 
 	}
 	~Sandbox() {}

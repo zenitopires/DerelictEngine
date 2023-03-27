@@ -14,7 +14,6 @@ namespace Derelict {
 		virtual float GetSeconds() const override;
 		virtual float GetMilliseconds() const override;
 
-		float GameTime() const override;
 		float DeltaTime() const override;
 		float TotalTime() const override;
 

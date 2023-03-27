@@ -37,15 +37,10 @@ namespace Derelict {
 			return static_cast<float>(((m_CurrTime - m_PausedTime) - m_BaseTime) * m_SecondsPerCount);
 		}
 	}
+
 	float WindowsTimer::DeltaTime() const
 	{
 		return static_cast<float>(m_DeltaTime);
-	}
-
-
-	float WindowsTimer::GameTime() const
-	{
-		return 0.0f;
 	}
 
 	void WindowsTimer::Reset()

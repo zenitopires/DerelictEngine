@@ -22,6 +22,7 @@ namespace Derelict {
 		virtual void SetFloat3(std::string_view name, const glm::vec3& value) override;
 		virtual void SetFloat4(std::string_view name, const glm::vec4& value) override;
 		virtual void SetMat4(std::string_view name, const glm::mat4& value) override;
+		virtual void SetInt(std::string_view name, uint8_t slot) override;
 
 		virtual const std::string GetName() const override { return m_Name; }
 
