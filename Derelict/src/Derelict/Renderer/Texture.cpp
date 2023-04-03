@@ -12,4 +12,9 @@ namespace Derelict {
 		return std::make_shared<OpenGLTexture2D>(path);
 	}
 
+	Derelict::Ref<Derelict::Texture2D> Texture2D::Create(uint32_t width, uint32_t height)
+	{
+		return std::make_shared<OpenGLTexture2D>(width, height);
+	}
+
 }

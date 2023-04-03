@@ -13,8 +13,8 @@ namespace Derelict {
 	struct Renderer2DStorage
 	{
 		Ref<VertexArray> SquareVA;
-		Ref<Shader> SquareShader;
 		Ref<Shader> TextureShader;
+		Ref<Texture2D> WhiteTexture;
 	};
 
 	static Renderer2DStorage* s_Data;
@@ -51,7 +51,11 @@ namespace Derelict {
 		s_Data->SquareVA->AddVertexBuffer(m_VertexBuffer);
 		s_Data->SquareVA->SetIndexBuffer(m_IndexBuffer);
 
-		s_Data->SquareShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create("assets/shaders/Square.glsl"));
+		s_Data->WhiteTexture = Texture2D::Create(1, 1);
+		uint32_t texData = 0xffffffff;
+		s_Data->WhiteTexture->SetData(&texData, sizeof(uint32_t));
+
+		s_Data->TextureShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create("assets/shaders/Square.glsl"));
 		s_Data->TextureShader = Derelict::Ref<Derelict::Shader>(Derelict::Shader::Create("assets/shaders/Texture.glsl"));
 
 		s_Data->TextureShader->Bind();
@@ -65,9 +69,6 @@ namespace Derelict {
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		s_Data->SquareShader->Bind();
-		s_Data->SquareShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-
 		s_Data->TextureShader->Bind();
 		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
@@ -84,11 +85,11 @@ namespace Derelict {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& scale, const glm::vec4& color)
 	{
-		s_Data->SquareShader->Bind();
-		s_Data->SquareShader->SetFloat4("u_Color", color);
+		s_Data->TextureShader->SetFloat4("u_Color", color);
+		s_Data->WhiteTexture->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { scale.x, scale.y, 0.0f });
-		s_Data->SquareShader->SetMat4("u_Transform", glm::mat4(1.0f) * transform);
+		s_Data->TextureShader->SetMat4("u_Transform", glm::mat4(1.0f) * transform);
 
 		s_Data->SquareVA->Bind();
 		RenderCommand::DrawIndexed(s_Data->SquareVA);
@@ -101,12 +102,11 @@ namespace Derelict {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& scale, const Ref<Texture> texture)
 	{
-		s_Data->TextureShader->Bind();
+		s_Data->TextureShader->SetFloat4("u_Color", glm::vec4(0.5f, 0.3f, 1.0f, 1.0f));
+		texture->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { scale.x, scale.y, 0.0f });
 		s_Data->TextureShader->SetMat4("u_Transform", glm::mat4(1.0f) * transform);
-
-		texture->Bind();
 
 		s_Data->SquareVA->Bind();
 		RenderCommand::DrawIndexed(s_Data->SquareVA);
